@@ -1,7 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Bell, Menu, Radar, Search, ShieldCheck, X } from "lucide-react";
+import { Bell, Menu, Search, ShieldCheck, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
+import Footer from "@/components/Footer";
 import { StatusBadge } from "@/components/sentinel/primitives";
 import { mobileNavItems, navSections } from "@/components/sentinel/nav";
 import { cn } from "@/lib/utils";
@@ -9,7 +10,11 @@ import { cn } from "@/lib/utils";
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <Link to="/" className="flex min-w-0 items-center gap-2.5">
-      <img src="/logo.png" alt="Sentinel" className="size-9 shrink-0 rounded-md object-cover" />
+      <img
+        src="/logo.png"
+        alt="Sentinel"
+        className="size-9 shrink-0 rounded-md object-cover"
+      />
       <span className="min-w-0">
         <span className="font-display block truncate text-base leading-none font-extrabold tracking-[0.14em] text-navy-foreground">
           SENTINEL
@@ -26,12 +31,16 @@ function Brand({ compact = false }: { compact?: boolean }) {
 
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4" aria-label="Main navigation">
+    <nav
+      className="flex-1 space-y-5 overflow-y-auto px-3 py-4"
+      aria-label="Main navigation"
+    >
       {navSections.map((section) => (
         <div key={section.heading}>
           <p className="px-2 pb-2 text-[10px] font-semibold tracking-[0.14em] text-navy-foreground/45 uppercase">
             {section.heading}
           </p>
+
           <ul className="space-y-0.5">
             {section.items.map((item) => (
               <li key={item.to}>
@@ -45,7 +54,11 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
                   className="flex min-h-11 items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium text-navy-foreground/75 transition-colors hover:bg-sidebar-accent/70 hover:text-navy-foreground"
                 >
                   <item.icon className="size-4 shrink-0" aria-hidden />
-                  <span className="min-w-0 flex-1 truncate">{item.label}</span>
+
+                  <span className="min-w-0 flex-1 truncate">
+                    {item.label}
+                  </span>
+
                   {item.badge ? (
                     <span className="tabular shrink-0 rounded-full bg-critical px-1.5 py-0.5 text-[10px] font-bold text-critical-foreground">
                       {item.badge}
@@ -68,11 +81,18 @@ function OfficerCard() {
         <span className="grid size-9 shrink-0 place-items-center rounded-full bg-royal text-xs font-bold text-royal-foreground">
           RS
         </span>
+
         <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-navy-foreground">Insp. R. Solanki</p>
-          <p className="truncate text-[11px] text-navy-foreground/60">Control Room · Gandhinagar</p>
+          <p className="truncate text-sm font-semibold text-navy-foreground">
+            Insp. R. Solanki
+          </p>
+
+          <p className="truncate text-[11px] text-navy-foreground/60">
+            Control Room · Gandhinagar
+          </p>
         </div>
       </div>
+
       <p className="mt-2.5 flex items-center gap-1.5 px-1 text-[11px] font-semibold tracking-wide text-success uppercase">
         <span className="size-1.5 rounded-full bg-success" aria-hidden />
         System Operational
@@ -83,18 +103,26 @@ function OfficerCard() {
 
 function useClock() {
   const [now, setNow] = useState<Date | null>(null);
+
   useEffect(() => {
     setNow(new Date());
+
     const id = setInterval(() => setNow(new Date()), 1000);
+
     return () => clearInterval(id);
   }, []);
+
   return now
-    ? now.toLocaleTimeString("en-IN", { hour12: false, timeZone: "Asia/Kolkata" })
+    ? now.toLocaleTimeString("en-IN", {
+        hour12: false,
+        timeZone: "Asia/Kolkata",
+      })
     : "--:--:--";
 }
 
 function TopBar({ onOpenMenu }: { onOpenMenu: () => void }) {
   const clock = useClock();
+
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-surface/95 backdrop-blur">
       <div className="flex items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-5">
@@ -114,11 +142,13 @@ function TopBar({ onOpenMenu }: { onOpenMenu: () => void }) {
           <label htmlFor="global-search" className="sr-only">
             Global search
           </label>
+
           <div className="relative">
             <Search
               className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
               aria-hidden
             />
+
             <input
               id="global-search"
               placeholder="Search vehicles, cameras, locations…"
@@ -128,15 +158,21 @@ function TopBar({ onOpenMenu }: { onOpenMenu: () => void }) {
         </form>
 
         <div className="hidden items-center gap-3 xl:flex">
-          <StatusBadge tone="success">48/50 Cameras Online</StatusBadge>
+          <StatusBadge tone="success">
+            48/50 Cameras Online
+          </StatusBadge>
+
           <StatusBadge tone="royal" dot={false}>
-            <ShieldCheck className="size-3" aria-hidden /> AI Services Nominal
+            <ShieldCheck className="size-3" aria-hidden />
+            AI Services Nominal
           </StatusBadge>
         </div>
 
         <span className="tabular hidden shrink-0 text-sm font-semibold text-foreground sm:block">
           {clock}
-          <span className="ml-1 text-[11px] font-medium text-muted-foreground">IST</span>
+          <span className="ml-1 text-[11px] font-medium text-muted-foreground">
+            IST
+          </span>
         </span>
 
         <Link
@@ -145,7 +181,10 @@ function TopBar({ onOpenMenu }: { onOpenMenu: () => void }) {
           aria-label="Alerts: 7 active"
         >
           <Bell className="size-4.5" aria-hidden />
-          <span className="absolute top-1 right-1 size-2 rounded-full bg-critical" aria-hidden />
+          <span
+            className="absolute top-1 right-1 size-2 rounded-full bg-critical"
+            aria-hidden
+          />
         </Link>
 
         <Link
@@ -156,6 +195,7 @@ function TopBar({ onOpenMenu }: { onOpenMenu: () => void }) {
           RS
         </Link>
       </div>
+
       <div className="flex items-center gap-2 overflow-x-auto border-t border-border px-3 py-1.5 xl:hidden">
         <StatusBadge tone="success">48/50 Online</StatusBadge>
         <StatusBadge tone="critical">7 Active Alerts</StatusBadge>
@@ -176,7 +216,10 @@ function BottomNav() {
           <li key={item.to}>
             <Link
               to={item.to}
-              activeProps={{ className: "text-royal", "aria-current": "page" }}
+              activeProps={{
+                className: "text-royal",
+                "aria-current": "page",
+              }}
               className="flex min-h-14 flex-col items-center justify-center gap-1 px-1 py-2 text-[11px] font-semibold text-muted-foreground"
             >
               <item.icon className="size-5" aria-hidden />
@@ -191,7 +234,10 @@ function BottomNav() {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = useRouterState({ select: (state) => state.location.pathname });
+
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
 
   useEffect(() => {
     setMenuOpen(false);
@@ -203,7 +249,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="border-b border-sidebar-border px-4 py-4">
           <Brand />
         </div>
+
         <NavList />
+
         <OfficerCard />
       </aside>
 
@@ -214,9 +262,11 @@ export function AppShell({ children }: { children: ReactNode }) {
             onClick={() => setMenuOpen(false)}
             aria-hidden
           />
+
           <div className="absolute inset-y-0 left-0 flex w-[17rem] max-w-[85vw] flex-col bg-sidebar shadow-[var(--shadow-lift)]">
             <div className="flex items-center justify-between gap-2 border-b border-sidebar-border px-4 py-3.5">
               <Brand />
+
               <button
                 onClick={() => setMenuOpen(false)}
                 className="grid size-10 shrink-0 place-items-center rounded-md text-navy-foreground/80 hover:bg-sidebar-accent"
@@ -225,7 +275,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <X className="size-5" aria-hidden />
               </button>
             </div>
+
             <NavList onNavigate={() => setMenuOpen(false)} />
+
             <OfficerCard />
           </div>
         </div>
@@ -233,10 +285,19 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <div className="lg:pl-64">
         <TopBar onOpenMenu={() => setMenuOpen(true)} />
-        <main className={cn("mx-auto w-full max-w-[1600px] px-3 pt-4 pb-24 sm:px-5 lg:pb-10")}>
+
+        <main
+          className={cn(
+            "mx-auto w-full max-w-[1600px] px-3 pt-4 pb-24 sm:px-5 lg:pb-10"
+          )}
+        >
           {children}
         </main>
+
+        {/* Footer */}
+        <Footer />
       </div>
+
       <BottomNav />
     </div>
   );
