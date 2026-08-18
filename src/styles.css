@@ -202,10 +202,22 @@
 
   body {
     background-color: var(--color-background);
+    background-image:
+      radial-gradient(ellipse 1200px 600px at 50% -10%, oklch(0.55 0.18 260 / 0.05), transparent),
+      radial-gradient(ellipse 900px 500px at 100% 0%, oklch(0.6 0.15 230 / 0.04), transparent);
+    background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "cv02", "cv03", "cv04";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
     overflow-x: hidden;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(ellipse 1200px 600px at 50% -10%, oklch(0.45 0.12 260 / 0.35), transparent),
+      radial-gradient(ellipse 900px 500px at 100% 0%, oklch(0.4 0.1 230 / 0.25), transparent);
   }
 
   h1,
