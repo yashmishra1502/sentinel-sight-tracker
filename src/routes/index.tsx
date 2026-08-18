@@ -1,4 +1,3 @@
-import Footer from "@/components/Footer";
 import { ThemeToggle } from "../components/theme-toggle";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
@@ -419,35 +418,6 @@ function Workflow() {
   );
 }
 
-function Footer() {
-  return (
-    <footer className="border-t border-border bg-surface-2">
-      <div className="mx-auto grid max-w-7xl gap-3 px-4 py-8 sm:grid-cols-[minmax(0,1fr)_auto] sm:px-6">
-        <div className="min-w-0">
-          <p className="font-display text-sm font-extrabold tracking-[0.16em] text-foreground">
-            SENTINEL
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Prototype interface prepared for the Gujarat Police Innovation Hackathon 2026. Detection
-            data shown is development mock data pending AI and backend integration.
-          </p>
-        </div>
-        <nav className="flex flex-wrap items-center gap-4 text-xs font-semibold text-muted-foreground">
-          <Link to="/dashboard" className="hover:text-foreground">
-            Command Center
-          </Link>
-          <Link to="/architecture" className="hover:text-foreground">
-            Architecture
-          </Link>
-          <Link to="/reports" className="hover:text-foreground">
-            Reports
-          </Link>
-        </nav>
-      </div>
-    </footer>
-  );
-}
-
 function Landing() {
   return (
     <>
@@ -461,8 +431,6 @@ function Landing() {
 
       {/* baaki tumhara existing homepage content */}
 
-      {/* FOOTER */}
-      <Footer />
     </>
   );
 }
