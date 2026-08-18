@@ -1,24 +1,463 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import {
+  ArrowRight,
+  Bell,
+  Building2,
+  Bus,
+  Cctv,
+  Cpu,
+  Database,
+  HeartPulse,
+  Landmark,
+  Layers,
+  MapPin,
+  Radar,
+  ScanLine,
+  Search,
+  Shield,
+  ShieldCheck,
+  Siren,
+} from "lucide-react";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+import { StatusBadge } from "@/components/sentinel/primitives";
+
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "SENTINEL — Gujarat Police CCTV Intelligence Platform" },
+      {
+        name: "description",
+        content:
+          "SENTINEL unifies heterogeneous government CCTV systems with AI vehicle detection, ANPR, cross-camera tracking and real-time watchlist alerts.",
+      },
+      { property: "og:title", content: "SENTINEL — See. Track. Respond." },
+      {
+        property: "og:description",
+        content:
+          "One intelligent view across Gujarat's connected CCTV ecosystem: vehicle search, GIS tracking and real-time alerts.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: Landing,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function TopNav() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
+    <header className="sticky top-0 z-30 border-b border-navy-muted/40 bg-navy/95 backdrop-blur">
+      <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
+        <span className="grid size-9 shrink-0 place-items-center rounded-md bg-royal text-royal-foreground">
+          <Radar className="size-5" aria-hidden />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="font-display truncate text-base leading-none font-extrabold tracking-[0.16em] text-navy-foreground">
+            SENTINEL
+          </p>
+          <p className="truncate text-[10px] font-medium tracking-[0.12em] text-navy-foreground/60 uppercase">
+            Gujarat Police Innovation Hackathon 2026
+          </p>
+        </div>
+        <nav className="hidden items-center gap-6 text-sm font-medium text-navy-foreground/75 md:flex">
+          <a href="#dataset" className="hover:text-navy-foreground">
+            Dataset
+          </a>
+          <a href="#departments" className="hover:text-navy-foreground">
+            Departments
+          </a>
+          <a href="#workflow" className="hover:text-navy-foreground">
+            Workflow
+          </a>
+          <Link to="/architecture" className="hover:text-navy-foreground">
+            Architecture
+          </Link>
+        </nav>
+        <Link
+          to="/dashboard"
+          className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-md bg-royal px-3 text-sm font-semibold text-royal-foreground transition-colors hover:bg-royal/90 sm:px-4"
+        >
+          Command Center
+          <ArrowRight className="size-4" aria-hidden />
+        </Link>
+      </div>
+    </header>
+  );
+}
+
+function HeroVisual() {
+  const cams = [
+    { id: "CAM-007", x: 30, y: 62, time: "10:05" },
+    { id: "CAM-015", x: 44, y: 50, time: "10:18" },
+    { id: "CAM-029", x: 62, y: 38, time: "10:31" },
+    { id: "CAM-041", x: 78, y: 26, time: "10:47" },
+  ];
+  return (
+    <div className="panel overflow-hidden bg-navy p-0 shadow-[var(--shadow-lift)]">
+      <div className="flex items-center justify-between gap-2 border-b border-navy-muted/50 px-3 py-2.5">
+        <span className="flex items-center gap-2 text-[11px] font-semibold tracking-wider text-navy-foreground/80 uppercase">
+          <Layers className="size-3.5" aria-hidden /> Command Preview
+        </span>
+        <StatusBadge tone="success" pulse>
+          Live
+        </StatusBadge>
+      </div>
+
+      <div className="grid gap-3 p-3 lg:grid-cols-[1.55fr_1fr]">
+        <div className="relative aspect-4/3 overflow-hidden rounded-md border border-navy-muted/60 bg-navy-muted/25 sm:aspect-16/10">
+          <div className="grid-backdrop absolute inset-0" aria-hidden />
+          <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" aria-hidden>
+            <path
+              d="M12,36 L20,24 L34,20 L46,24 L54,20 L62,28 L60,40 L66,50 L62,62 L66,74 L56,88 L44,86 L36,78 L26,80 L20,70 L26,58 L18,50 L24,42 Z"
+              className="fill-royal/12 stroke-royal/60"
+              strokeWidth="0.5"
+            />
+            <polyline
+              points={cams.map((cam) => `${cam.x},${cam.y}`).join(" ")}
+              fill="none"
+              className="stroke-royal/40"
+              strokeWidth="1"
+            />
+            <polyline
+              points={cams.map((cam) => `${cam.x},${cam.y}`).join(" ")}
+              fill="none"
+              className="flow-dash stroke-royal"
+              strokeWidth="0.6"
+            />
+            {cams.map((cam) => (
+              <g key={cam.id}>
+                <circle cx={cam.x} cy={cam.y} r="2.6" className="fill-royal/25" />
+                <circle cx={cam.x} cy={cam.y} r="1.1" className="fill-success" />
+                <text x={cam.x + 3} y={cam.y - 1.5} className="fill-navy-foreground text-[2.6px] font-bold">
+                  {cam.id} · {cam.time}
+                </text>
+              </g>
+            ))}
+          </svg>
+          <div className="absolute top-3 left-3 rounded-md border border-critical/50 bg-critical/15 px-2.5 py-1.5">
+            <p className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider text-critical-foreground uppercase">
+              <Siren className="size-3" aria-hidden /> Watchlist match · CAM-029
+            </p>
+          </div>
+          <div className="absolute bottom-3 left-3 rounded-md border border-navy-muted/60 bg-navy/85 px-2.5 py-1.5">
+            <p className="label-caps text-navy-foreground/60">Tracked vehicle</p>
+            <p className="tabular text-sm font-extrabold text-navy-foreground">GJ01AB1234</p>
+          </div>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+          {[
+            { id: "CAM-029", place: "Gandhinagar", state: "LIVE" },
+            { id: "CAM-041", place: "Gandhinagar", state: "LIVE" },
+          ].map((cam) => (
+            <div
+              key={cam.id}
+              className="relative aspect-video overflow-hidden rounded-md border border-navy-muted/60 bg-navy-muted/25"
+            >
+              <div className="grid-backdrop absolute inset-0" aria-hidden />
+              <div className="scanline absolute inset-x-0 top-0 h-6 bg-royal/12" aria-hidden />
+              <div className="absolute inset-0 grid place-items-center text-navy-foreground/40">
+                <Cctv className="size-6" aria-hidden />
+              </div>
+              <span className="tabular absolute top-2 left-2 rounded bg-navy/80 px-1.5 py-0.5 text-[10px] font-bold text-navy-foreground">
+                {cam.id}
+              </span>
+              <span className="absolute top-2 right-2 flex items-center gap-1 rounded bg-success/20 px-1.5 py-0.5 text-[10px] font-bold text-success">
+                <span className="size-1.5 rounded-full bg-success" aria-hidden /> {cam.state}
+              </span>
+              <span className="absolute bottom-2 left-2 rounded bg-navy/80 px-1.5 py-0.5 text-[10px] font-medium text-navy-foreground/85">
+                {cam.place}
+              </span>
+            </div>
+          ))}
+          <div className="rounded-md border border-navy-muted/60 bg-navy-muted/25 p-3">
+            <p className="label-caps text-navy-foreground/55">Detection</p>
+            <p className="tabular mt-1 text-sm font-bold text-navy-foreground">
+              ANPR · 97% confidence
+            </p>
+            <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-navy/60">
+              <div className="h-full w-[97%] rounded-full bg-success" />
+            </div>
+            <p className="mt-2 text-[11px] text-navy-foreground/60">
+              4 detections · 4 cameras · 2 locations
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="relative overflow-hidden bg-navy">
+      <div className="grid-backdrop absolute inset-0 opacity-60" aria-hidden />
+      <div
+        className="absolute -top-32 -right-24 size-96 rounded-full bg-royal/20 blur-3xl"
+        aria-hidden
       />
+      <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.15fr] lg:items-center">
+          <div className="min-w-0">
+            <StatusBadge tone="royal" dot={false} className="bg-royal/15 text-navy-foreground">
+              <ShieldCheck className="size-3" aria-hidden /> Government CCTV Intelligence
+            </StatusBadge>
+            <h1 className="font-display mt-5 text-3xl leading-[1.08] font-extrabold text-navy-foreground sm:text-5xl lg:text-6xl">
+              See Every Camera.
+              <br />
+              Track Every Movement.
+            </h1>
+            <p className="mt-5 max-w-xl text-base text-navy-foreground/70 sm:text-lg">
+              A unified intelligence platform connecting heterogeneous government CCTV systems with
+              AI-powered vehicle detection, tracking and real-time alerts.
+            </p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <Link
+                to="/dashboard"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-royal px-6 text-sm font-bold tracking-wide text-royal-foreground uppercase transition-colors hover:bg-royal/90"
+              >
+                Explore Command Center <ArrowRight className="size-4" aria-hidden />
+              </Link>
+              <Link
+                to="/architecture"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-navy-foreground/25 px-6 text-sm font-bold tracking-wide text-navy-foreground uppercase transition-colors hover:bg-navy-muted/50"
+              >
+                View System Architecture
+              </Link>
+            </div>
+            <dl className="mt-9 grid max-w-lg grid-cols-3 gap-4 border-t border-navy-muted/50 pt-6">
+              {[
+                { k: "Cameras unified", v: "50" },
+                { k: "Departments", v: "5" },
+                { k: "Avg. ANPR conf.", v: "96%" },
+              ].map((item) => (
+                <div key={item.k} className="min-w-0">
+                  <dd className="tabular font-display text-2xl font-extrabold text-navy-foreground sm:text-3xl">
+                    {item.v}
+                  </dd>
+                  <dt className="mt-1 text-[11px] font-medium tracking-wide text-navy-foreground/55 uppercase">
+                    {item.k}
+                  </dt>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <HeroVisual />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Dataset() {
+  return (
+    <section id="dataset" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+      <p className="label-caps">Challenge environment</p>
+      <h2 className="mt-2 max-w-2xl text-2xl font-extrabold text-foreground sm:text-4xl">
+        A Real Government CCTV Environment
+      </h2>
+      <p className="mt-4 max-w-3xl text-sm text-muted-foreground sm:text-base">
+        Designed around heterogeneous government CCTV infrastructure, multiple departments, live and
+        archived feeds, and a realistic multi-camera proving environment.
+      </p>
+
+      <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        {[
+          { value: "30+", label: "Cameras", note: "Provided across departments" },
+          { value: "5", label: "Departments", note: "Different vendors and NVR stacks" },
+          { value: "12 Hrs", label: "Feed per camera", note: "Live and archived footage" },
+        ].map((stat) => (
+          <article key={stat.label} className="panel p-5">
+            <p className="tabular font-display text-4xl font-extrabold text-navy sm:text-5xl">
+              {stat.value}
+            </p>
+            <p className="mt-2 text-sm font-bold tracking-wide text-foreground uppercase">
+              {stat.label}
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">{stat.note}</p>
+          </article>
+        ))}
+      </div>
+
+      <article className="panel mt-4 grid gap-4 border-royal/35 bg-royal/6 p-5 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center">
+        <p className="tabular font-display text-4xl font-extrabold text-royal sm:text-5xl">~50</p>
+        <div className="min-w-0">
+          <p className="text-sm font-bold tracking-wide text-foreground uppercase">
+            Camera proving ground
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Target evaluation environment. SENTINEL is architected to scale beyond this deployment
+            without changing the operational interface.
+          </p>
+        </div>
+      </article>
+    </section>
+  );
+}
+
+const departmentCards = [
+  { name: "HEALTH", role: "CCTV Infrastructure", icon: HeartPulse },
+  { name: "POLICE", role: "Public Safety", icon: Shield },
+  { name: "GSRTC", role: "Transport", icon: Bus },
+  { name: "PANCHAYAT", role: "Local Administration", icon: Landmark },
+  { name: "MUNICIPAL", role: "Urban Infrastructure", icon: Building2 },
+];
+
+function Departments() {
+  return (
+    <section id="departments" className="border-y border-border bg-surface-2">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+        <p className="label-caps">Participating environment</p>
+        <h2 className="mt-2 text-2xl font-extrabold text-foreground sm:text-4xl">
+          Department Coverage
+        </h2>
+        <p className="mt-4 max-w-2xl text-sm text-muted-foreground sm:text-base">
+          Five departments, different vendors, different infrastructure — one normalised intelligence
+          layer.
+        </p>
+
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          {departmentCards.map((dept) => (
+            <article key={dept.name} className="panel p-4">
+              <span className="grid size-9 place-items-center rounded-md bg-navy text-navy-foreground">
+                <dept.icon className="size-4.5" aria-hidden />
+              </span>
+              <p className="mt-3 text-sm font-bold tracking-wide text-foreground">{dept.name}</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">{dept.role}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="panel mt-4 p-4 sm:p-6">
+          <svg viewBox="0 0 600 120" className="h-28 w-full" role="img" aria-label="All departments feed into SENTINEL">
+            {departmentCards.map((dept, index) => {
+              const x = 40 + index * 130;
+              return (
+                <g key={dept.name}>
+                  <text x={x} y="22" className="fill-muted-foreground text-[11px] font-semibold">
+                    {dept.name}
+                  </text>
+                  <path
+                    d={`M${x + 20},30 C${x + 20},70 300,60 300,90`}
+                    fill="none"
+                    className="stroke-border"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d={`M${x + 20},30 C${x + 20},70 300,60 300,90`}
+                    fill="none"
+                    className="flow-dash stroke-royal"
+                    strokeWidth="1.5"
+                  />
+                </g>
+              );
+            })}
+            <rect x="238" y="88" width="124" height="26" rx="6" className="fill-navy" />
+            <text
+              x="300"
+              y="105"
+              textAnchor="middle"
+              className="fill-navy-foreground text-[12px] font-extrabold tracking-[0.18em]"
+            >
+              SENTINEL
+            </text>
+          </svg>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const workflowSteps = [
+  { icon: Search, title: "Officer enters vehicle number", body: "GJ01AB1234 queried across all connected CCTV sources." },
+  { icon: Cpu, title: "AI detects the vehicle", body: "Detection models run on live and archived feeds." },
+  { icon: ScanLine, title: "ANPR reads the plate", body: "Plate text plus confidence stored as structured data." },
+  { icon: Database, title: "Detection is stored", body: "Camera + timestamp + location + confidence." },
+  { icon: MapPin, title: "Movement is reconstructed", body: "Cross-camera route with previous / next sightings." },
+  { icon: Bell, title: "Watchlist check + alert", body: "Matches raise a real-time alert to the control room." },
+];
+
+function Workflow() {
+  return (
+    <section id="workflow" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+      <p className="label-caps">Operational workflow</p>
+      <h2 className="mt-2 text-2xl font-extrabold text-foreground sm:text-4xl">
+        From Vehicle Number to Field Action
+      </h2>
+      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {workflowSteps.map((step, index) => (
+          <article key={step.title} className="panel flex gap-3 p-4">
+            <span className="grid size-9 shrink-0 place-items-center rounded-md bg-royal/10 text-royal">
+              <step.icon className="size-4.5" aria-hidden />
+            </span>
+            <div className="min-w-0">
+              <p className="label-caps">Step {index + 1}</p>
+              <p className="mt-0.5 text-sm font-bold text-foreground">{step.title}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{step.body}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="panel mt-6 grid gap-4 bg-navy p-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+        <div className="min-w-0">
+          <p className="font-display text-xl font-extrabold tracking-[0.18em] text-navy-foreground">
+            SENTINEL · SEE. TRACK. RESPOND.
+          </p>
+          <p className="mt-2 text-sm text-navy-foreground/70">
+            One intelligent view across Gujarat's connected CCTV ecosystem.
+          </p>
+        </div>
+        <Link
+          to="/search"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-royal px-6 text-sm font-bold tracking-wide text-royal-foreground uppercase hover:bg-royal/90"
+        >
+          Try Vehicle Search <ArrowRight className="size-4" aria-hidden />
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-border bg-surface-2">
+      <div className="mx-auto grid max-w-7xl gap-3 px-4 py-8 sm:grid-cols-[minmax(0,1fr)_auto] sm:px-6">
+        <div className="min-w-0">
+          <p className="font-display text-sm font-extrabold tracking-[0.16em] text-foreground">
+            SENTINEL
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Prototype interface prepared for the Gujarat Police Innovation Hackathon 2026. Detection
+            data shown is development mock data pending AI and backend integration.
+          </p>
+        </div>
+        <nav className="flex flex-wrap items-center gap-4 text-xs font-semibold text-muted-foreground">
+          <Link to="/dashboard" className="hover:text-foreground">
+            Command Center
+          </Link>
+          <Link to="/architecture" className="hover:text-foreground">
+            Architecture
+          </Link>
+          <Link to="/reports" className="hover:text-foreground">
+            Reports
+          </Link>
+        </nav>
+      </div>
+    </footer>
+  );
+}
+
+function Landing() {
+  return (
+    <div className="min-h-screen bg-background">
+      <TopNav />
+      <main>
+        <Hero />
+        <Dataset />
+        <Departments />
+        <Workflow />
+      </main>
+      <Footer />
     </div>
   );
 }
