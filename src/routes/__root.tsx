@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "SENTINEL — Gujarat Police CCTV Intelligence Platform" },
+      { name: "description", content: "SENTINEL unifies heterogeneous government CCTV systems with AI vehicle detection, ANPR, cross-camera tracking and real-time watchlist alerts." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "SENTINEL — Gujarat Police CCTV Intelligence Platform" },
+      { property: "og:description", content: "SENTINEL unifies heterogeneous government CCTV systems with AI vehicle detection, ANPR, cross-camera tracking and real-time watchlist alerts." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "SENTINEL — Gujarat Police CCTV Intelligence Platform" },
+      { name: "twitter:description", content: "SENTINEL unifies heterogeneous government CCTV systems with AI vehicle detection, ANPR, cross-camera tracking and real-time watchlist alerts." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/67f240abad272b2f7f355aa9dee2f818/id-preview-84a1b65c--d55a0993-9c15-4d2f-b23b-a1ba9df53bcb.lovable.app-1787052258733.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/67f240abad272b2f7f355aa9dee2f818/id-preview-84a1b65c--d55a0993-9c15-4d2f-b23b-a1ba9df53bcb.lovable.app-1787052258733.png" },
     ],
     links: [
       {

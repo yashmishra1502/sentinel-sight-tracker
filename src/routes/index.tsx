@@ -30,11 +30,11 @@ export const Route = createFileRoute("/")({
         content:
           "SENTINEL unifies heterogeneous government CCTV systems with AI vehicle detection, ANPR, cross-camera tracking and real-time watchlist alerts.",
       },
-      { property: "og:title", content: "SENTINEL — See. Track. Respond." },
+      { property: "og:title", content: "SENTINEL — Gujarat Police CCTV Intelligence Platform" },
       {
         property: "og:description",
         content:
-          "One intelligent view across Gujarat's connected CCTV ecosystem: vehicle search, GIS tracking and real-time alerts.",
+          "SENTINEL unifies heterogeneous government CCTV systems with AI vehicle detection, ANPR, cross-camera tracking and real-time watchlist alerts.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
