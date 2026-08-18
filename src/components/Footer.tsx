@@ -1,10 +1,10 @@
-import { Shield, MapPin, Phone, Mail, ExternalLink } from "lucide-react";
+import { MapPin, Phone, Mail, ExternalLink } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-[#0a1128] text-slate-200 border-t border-slate-700">
+    <footer className="w-full bg-gradient-to-b from-[#0a1128] to-[#060b1c] text-slate-200 border-t border-slate-700">
       {/* Tricolor accent strip — signature govt-portal touch */}
       <div className="h-1 w-full flex">
         <div className="flex-1 bg-orange-500" />
@@ -16,8 +16,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand / About */}
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Shield className="h-6 w-6 text-blue-400" />
+            <div className="flex items-center gap-3">
+              <img
+                src="/logo.png"
+                alt="Gujarat Police Logo"
+                className="h-11 w-11 object-contain drop-shadow-[0_0_6px_rgba(59,130,246,0.35)]"
+              />
               <span className="font-extrabold text-lg tracking-wide text-white">
                 SENTINEL
               </span>
