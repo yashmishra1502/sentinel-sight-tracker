@@ -283,22 +283,21 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       ) : null}
 
-      <div className="lg:pl-64">
-        <TopBar onOpenMenu={() => setMenuOpen(true)} />
+     <div className="lg:pl-64">
+  <TopBar onOpenMenu={() => setMenuOpen(true)} />
 
-        <main
-          className={cn(
-            "mx-auto w-full max-w-[1600px] px-3 pt-4 pb-24 sm:px-5 lg:pb-10"
-          )}
-        >
-          {children}
-        </main>
+  <main
+    className={cn(
+      "mx-auto w-full max-w-[1600px] px-3 pt-4 pb-24 sm:px-5 lg:pb-10"
+    )}
+  >
+    {children}
+  </main>
 
-        {/* Footer */}
-        <Footer />
-      </div>
+  <Footer />
+</div>
 
-      <BottomNav />
+<BottomNav />
     </div>
   );
 }
