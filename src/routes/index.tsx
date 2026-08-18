@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import { ThemeToggle } from "../components/theme-toggle";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
@@ -449,15 +450,19 @@ function Footer() {
 
 function Landing() {
   return (
-    <div className="min-h-screen bg-background">
+    <>
       <TopNav />
-      <main>
-        <Hero />
-        <Dataset />
-        <Departments />
-        <Workflow />
-      </main>
+
+      <Hero />
+
+      <Dataset />
+
+      <Departments />
+
+      {/* baaki tumhara existing homepage content */}
+
+      {/* FOOTER */}
       <Footer />
-    </div>
+    </>
   );
 }
