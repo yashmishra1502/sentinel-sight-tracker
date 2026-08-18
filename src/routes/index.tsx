@@ -1,4 +1,4 @@
-   import { ThemeToggle } from "../components/theme-toggle";
+import { ThemeToggle } from "../components/theme-toggle";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -46,28 +46,28 @@ export const Route = createFileRoute("/")({
 
 function TopNav() {
   return (
-    <header className="sticky top-0 z-30 border-b border-navy-muted/40 bg-navy/95 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-border bg-navbar/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
         <img src="/logo.png" alt="Sentinel" className="size-9 shrink-0 rounded-md object-cover" />
         <div className="min-w-0 flex-1">
-          <p className="font-display truncate text-base leading-none font-extrabold tracking-[0.16em] text-navy-foreground">
+          <p className="font-display truncate text-base leading-none font-extrabold tracking-[0.16em] text-foreground">
             SENTINEL
           </p>
-          <p className="truncate text-[10px] font-medium tracking-[0.12em] text-navy-foreground/60 uppercase">
+          <p className="truncate text-[10px] font-medium tracking-[0.12em] text-muted-foreground uppercase">
             Gujarat Police Innovation Hackathon 2026
           </p>
         </div>
-        <nav className="hidden items-center gap-6 text-sm font-medium text-navy-foreground/75 md:flex">
-          <a href="#dataset" className="hover:text-navy-foreground">
+        <nav className="hidden items-center gap-6 text-sm font-medium text-muted-foreground md:flex">
+          <a href="#dataset" className="hover:text-foreground">
             Dataset
           </a>
-          <a href="#departments" className="hover:text-navy-foreground">
+          <a href="#departments" className="hover:text-foreground">
             Departments
           </a>
-          <a href="#workflow" className="hover:text-navy-foreground">
+          <a href="#workflow" className="hover:text-foreground">
             Workflow
           </a>
-          <Link to="/architecture" className="hover:text-navy-foreground">
+          <Link to="/architecture" className="hover:text-foreground">
             Architecture
           </Link>
         </nav>
@@ -189,7 +189,7 @@ function HeroVisual() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-navy">
+    <section className="relative overflow-hidden bg-background">
       <div className="grid-backdrop absolute inset-0 opacity-60" aria-hidden />
       <div
         className="absolute -top-32 -right-24 size-96 rounded-full bg-royal/20 blur-3xl"
@@ -198,15 +198,15 @@ function Hero() {
       <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.15fr] lg:items-center">
           <div className="min-w-0">
-            <StatusBadge tone="royal" dot={false} className="bg-royal/15 text-navy-foreground">
+            <StatusBadge tone="royal" dot={false} className="bg-royal/15 text-foreground">
               <ShieldCheck className="size-3" aria-hidden /> Government CCTV Intelligence
             </StatusBadge>
-            <h1 className="font-display mt-5 text-3xl leading-[1.08] font-extrabold text-navy-foreground sm:text-5xl lg:text-6xl">
+            <h1 className="font-display mt-5 text-3xl leading-[1.08] font-extrabold text-foreground sm:text-5xl lg:text-6xl">
               See Every Camera.
               <br />
               Track Every Movement.
             </h1>
-            <p className="mt-5 max-w-xl text-base text-navy-foreground/70 sm:text-lg">
+            <p className="mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
               A unified intelligence platform connecting heterogeneous government CCTV systems with
               AI-powered vehicle detection, tracking and real-time alerts.
             </p>
@@ -219,22 +219,22 @@ function Hero() {
               </Link>
               <Link
                 to="/architecture"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-navy-foreground/25 px-6 text-sm font-bold tracking-wide text-navy-foreground uppercase transition-colors hover:bg-navy-muted/50"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-border px-6 text-sm font-bold tracking-wide text-foreground uppercase transition-colors hover:bg-accent"
               >
                 View System Architecture
               </Link>
             </div>
-            <dl className="mt-9 grid max-w-lg grid-cols-3 gap-4 border-t border-navy-muted/50 pt-6">
+            <dl className="mt-9 grid max-w-lg grid-cols-3 gap-4 border-t border-border pt-6">
               {[
                 { k: "Cameras unified", v: "50" },
                 { k: "Departments", v: "5" },
                 { k: "Avg. ANPR conf.", v: "96%" },
               ].map((item) => (
                 <div key={item.k} className="min-w-0">
-                  <dd className="tabular font-display text-2xl font-extrabold text-navy-foreground sm:text-3xl">
+                  <dd className="tabular font-display text-2xl font-extrabold text-foreground sm:text-3xl">
                     {item.v}
                   </dd>
-                  <dt className="mt-1 text-[11px] font-medium tracking-wide text-navy-foreground/55 uppercase">
+                  <dt className="mt-1 text-[11px] font-medium tracking-wide text-muted-foreground uppercase">
                     {item.k}
                   </dt>
                 </div>
