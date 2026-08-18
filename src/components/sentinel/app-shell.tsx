@@ -2,7 +2,6 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Bell, Menu, Search, ShieldCheck, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
-import Footer from "@/components/Footer";
 import { StatusBadge } from "@/components/sentinel/primitives";
 import { mobileNavItems, navSections } from "@/components/sentinel/nav";
 import { cn } from "@/lib/utils";
@@ -294,7 +293,6 @@ export function AppShell({ children }: { children: ReactNode }) {
     {children}
   </main>
 
-  <Footer />
 </div>
 
 <BottomNav />
