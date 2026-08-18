@@ -1,3 +1,4 @@
+   import { ThemeToggle } from "../components/theme-toggle";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -72,6 +73,7 @@ function TopNav() {
             Architecture
           </Link>
         </nav>
+           <ThemeToggle />
         <Link
           to="/dashboard"
           className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-md bg-royal px-3 text-sm font-semibold text-royal-foreground transition-colors hover:bg-royal/90 sm:px-4"
