@@ -48,9 +48,7 @@ function TopNav() {
   return (
     <header className="sticky top-0 z-30 border-b border-navy-muted/40 bg-navy/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
-        <span className="grid size-9 shrink-0 place-items-center rounded-md bg-royal text-royal-foreground">
-          <Radar className="size-5" aria-hidden />
-        </span>
+        <img src="/logo.png" alt="Sentinel" className="size-9 shrink-0 rounded-md object-cover" />
         <div className="min-w-0 flex-1">
           <p className="font-display truncate text-base leading-none font-extrabold tracking-[0.16em] text-navy-foreground">
             SENTINEL
