@@ -6,8 +6,8 @@
 
 /*
  * SENTINEL design system — government-grade command center.
- * Palette: deep navy / royal blue / slate neutrals, with green / amber / red
- * operational status colors. All colors are oklch semantic tokens.
+ * Palette: soft slate-blue background, deep navy sidebar, white surfaces,
+ * royal blue primary, with green / amber / red operational status colors.
  */
 
 @theme inline {
@@ -32,6 +32,8 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-blue: var(--secondary-blue);
+  --color-secondary-blue-foreground: var(--secondary-blue-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
@@ -41,6 +43,9 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  --color-navbar: var(--navbar);
+  --color-navbar-foreground: var(--navbar-foreground);
 
   --color-navy: var(--navy);
   --color-navy-foreground: var(--navy-foreground);
@@ -79,79 +84,109 @@
 :root {
   --radius: 0.5rem;
 
-  --background: oklch(0.985 0.004 250);
-  --foreground: oklch(0.22 0.035 260);
-  --surface: oklch(1 0 0);
-  --surface-2: oklch(0.968 0.008 250);
+  /* Main BG */
+  --background: #F4F7FB;
+  /* Text */
+  --foreground: #0F172A;
+  /* Cards */
+  --surface: #FFFFFF;
+  --surface-2: #EEF2F8;
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.035 260);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.035 260);
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0F172A;
 
-  --navy: oklch(0.245 0.062 264);
-  --navy-foreground: oklch(0.985 0.004 250);
-  --navy-muted: oklch(0.33 0.055 264);
+  /* Navbar */
+  --navbar: #FFFFFF;
+  --navbar-foreground: #0F172A;
 
-  --royal: oklch(0.505 0.183 264);
-  --royal-foreground: oklch(0.99 0.003 250);
+  /* Sidebar base (navy) */
+  --navy: #0B1736;
+  --navy-foreground: #FFFFFF;
+  --navy-muted: #16224A;
 
-  --primary: oklch(0.245 0.062 264);
-  --primary-foreground: oklch(0.985 0.004 250);
-  --secondary: oklch(0.955 0.012 250);
-  --secondary-foreground: oklch(0.28 0.05 264);
-  --muted: oklch(0.962 0.008 250);
-  --muted-foreground: oklch(0.505 0.03 258);
-  --accent: oklch(0.945 0.028 258);
-  --accent-foreground: oklch(0.3 0.08 264);
+  --royal: #2563EB;
+  --royal-foreground: #FFFFFF;
 
-  --success: oklch(0.58 0.145 152);
-  --success-foreground: oklch(0.99 0.003 250);
-  --warning: oklch(0.76 0.155 76);
-  --warning-foreground: oklch(0.26 0.05 70);
-  --critical: oklch(0.555 0.215 26);
-  --critical-foreground: oklch(0.99 0.003 250);
-  --info: oklch(0.62 0.13 236);
+  /* Primary */
+  --primary: #2563EB;
+  --primary-foreground: #FFFFFF;
 
-  --destructive: oklch(0.555 0.215 26);
-  --destructive-foreground: oklch(0.99 0.003 250);
-  --border: oklch(0.905 0.012 254);
-  --input: oklch(0.9 0.014 254);
-  --ring: oklch(0.505 0.183 264);
+  --secondary: #EEF2F8;
+  --secondary-foreground: #0F172A;
 
-  --chart-1: oklch(0.505 0.183 264);
-  --chart-2: oklch(0.58 0.145 152);
-  --chart-3: oklch(0.76 0.155 76);
-  --chart-4: oklch(0.555 0.215 26);
-  --chart-5: oklch(0.42 0.09 264);
+  /* Secondary Blue */
+  --secondary-blue: #3B82F6;
+  --secondary-blue-foreground: #FFFFFF;
 
-  --sidebar: oklch(0.245 0.062 264);
-  --sidebar-foreground: oklch(0.9 0.015 254);
-  --sidebar-primary: oklch(0.505 0.183 264);
-  --sidebar-primary-foreground: oklch(0.99 0.003 250);
-  --sidebar-accent: oklch(0.305 0.058 264);
-  --sidebar-accent-foreground: oklch(0.985 0.004 250);
-  --sidebar-border: oklch(0.335 0.05 264);
-  --sidebar-ring: oklch(0.505 0.183 264);
+  --muted: #EEF2F8;
+  /* Muted Text */
+  --muted-foreground: #64748B;
+
+  --accent: #E8EEFB;
+  --accent-foreground: #1E3A8A;
+
+  /* Success */
+  --success: #059669;
+  --success-foreground: #FFFFFF;
+  /* Warning */
+  --warning: #D97706;
+  --warning-foreground: #FFFFFF;
+  /* Critical */
+  --critical: #DC2626;
+  --critical-foreground: #FFFFFF;
+
+  --info: #3B82F6;
+
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+
+  /* Border */
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #2563EB;
+
+  --chart-1: #2563EB;
+  --chart-2: #059669;
+  --chart-3: #D97706;
+  --chart-4: #DC2626;
+  --chart-5: #3B82F6;
+
+  /* Sidebar */
+  --sidebar: #0B1736;
+  --sidebar-foreground: #E2E8F0;
+  --sidebar-primary: #2563EB;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #16224A;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #1C2B57;
+  --sidebar-ring: #2563EB;
 }
 
 .dark {
-  --background: oklch(0.19 0.045 264);
-  --foreground: oklch(0.965 0.006 250);
-  --surface: oklch(0.235 0.05 264);
-  --surface-2: oklch(0.275 0.05 264);
-  --card: oklch(0.235 0.05 264);
-  --card-foreground: oklch(0.965 0.006 250);
-  --popover: oklch(0.235 0.05 264);
-  --popover-foreground: oklch(0.965 0.006 250);
-  --primary: oklch(0.6 0.175 264);
-  --primary-foreground: oklch(0.99 0.003 250);
-  --secondary: oklch(0.29 0.05 264);
-  --secondary-foreground: oklch(0.965 0.006 250);
-  --muted: oklch(0.29 0.05 264);
-  --muted-foreground: oklch(0.72 0.03 256);
-  --accent: oklch(0.32 0.06 264);
-  --accent-foreground: oklch(0.97 0.005 250);
+  --background: #0B1736;
+  --foreground: #F4F7FB;
+  --surface: #16224A;
+  --surface-2: #1C2B57;
+  --card: #16224A;
+  --card-foreground: #F4F7FB;
+  --popover: #16224A;
+  --popover-foreground: #F4F7FB;
+
+  --navbar: #16224A;
+  --navbar-foreground: #F4F7FB;
+
+  --primary: #3B82F6;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1C2B57;
+  --secondary-foreground: #F4F7FB;
+  --secondary-blue: #3B82F6;
+  --secondary-blue-foreground: #FFFFFF;
+  --muted: #1C2B57;
+  --muted-foreground: #94A3B8;
+  --accent: #1E3A8A;
+  --accent-foreground: #F4F7FB;
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 16%);
 }
@@ -194,6 +229,11 @@
   box-shadow: var(--shadow-panel);
 }
 
+@utility navbar {
+  background-color: var(--color-navbar);
+  border-bottom: 1px solid var(--color-border);
+}
+
 @utility label-caps {
   font-size: 0.6875rem;
   font-weight: 600;
@@ -215,13 +255,13 @@
 
 @keyframes sentinel-pulse {
   0% {
-    box-shadow: 0 0 0 0 oklch(0.555 0.215 26 / 0.55);
+    box-shadow: 0 0 0 0 #DC262688;
   }
   70% {
-    box-shadow: 0 0 0 12px oklch(0.555 0.215 26 / 0);
+    box-shadow: 0 0 0 12px #DC262600;
   }
   100% {
-    box-shadow: 0 0 0 0 oklch(0.555 0.215 26 / 0);
+    box-shadow: 0 0 0 0 #DC262600;
   }
 }
 
