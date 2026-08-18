@@ -9,9 +9,7 @@ import { cn } from "@/lib/utils";
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <Link to="/" className="flex min-w-0 items-center gap-2.5">
-      <span className="grid size-9 shrink-0 place-items-center rounded-md bg-royal text-royal-foreground">
-        <Radar className="size-5" aria-hidden />
-      </span>
+      <img src="/logo.png" alt="Sentinel" className="size-9 shrink-0 rounded-md object-cover" />
       <span className="min-w-0">
         <span className="font-display block truncate text-base leading-none font-extrabold tracking-[0.14em] text-navy-foreground">
           SENTINEL
