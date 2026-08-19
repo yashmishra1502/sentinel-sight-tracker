@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
+import { AddCameraDialog } from "@/components/sentinel/add-camera-dialog";
 import { AppShell } from "@/components/sentinel/app-shell";
 import {
   ErrorState,
@@ -38,6 +39,7 @@ function RegistryPage() {
           eyebrow="Infrastructure"
           title="Camera Registry"
           description="Source of truth for camera onboarding: vendor stream state, AI service state and heartbeat."
+          actions={<AddCameraDialog />}
         />
 
         {cameras.isPending ? (
