@@ -7,7 +7,7 @@ import {
   departmentActivity,
   detectionVolume,
   topLocations,
-} from "@/lib/sentinel/mock-data";
+} from "@/lib/sentinel/sample-analytics";
 
 export const Route = createFileRoute("/analytics")({
   head: () => ({
