@@ -24,6 +24,27 @@ const ROLES = [
   { value: "supervisor", label: "Supervisor" },
 ];
 
+const DESIGNATIONS = [
+  { value: "police_inspector", label: "Police Inspector" },
+  { value: "police_sub_inspector", label: "Police Sub-Inspector (PSI)" },
+  { value: "police_constable", label: "Police Constable" },
+  { value: "traffic_police_officer", label: "Traffic Police Officer" },
+  { value: "acp", label: "ACP / Assistant Commissioner" },
+  { value: "municipal_officer", label: "Municipal Officer" },
+  { value: "rto_officer", label: "RTO Officer" },
+  { value: "fire_emergency_officer", label: "Fire & Emergency Officer" },
+  { value: "control_room_officer", label: "Control Room Officer" },
+  { value: "superintendent_of_police", label: "Superintendent of Police" },
+];
+
+const DEPARTMENTS = [
+  { value: "health", label: "Health" },
+  { value: "police", label: "Police" },
+  { value: "gsrtc", label: "GSRTC" },
+  { value: "panchayat", label: "Panchayat" },
+  { value: "municipal", label: "Municipal" },
+];
+
 function RegisterPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -54,6 +75,7 @@ function RegisterPage() {
       !form.department ||
       !form.employeeId ||
       !form.role ||
+      !form.designation ||
       !form.password
     ) {
       setError("Sabhi required fields bharein.");
@@ -107,7 +129,7 @@ function RegisterPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-10">
-      <div className="w-full max-w-md space-y-5">
+      <div className="w-full max-w-2xl space-y-5">
         <PageHeading
           eyebrow="SENTINEL"
           title="Officer Registration"
@@ -115,95 +137,129 @@ function RegisterPage() {
         />
 
         <SectionCard title="" subtitle="" bodyClassName="p-5 sm:p-6">
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <Field label="Full Name" id="name">
-              <input
-                id="name"
-                value={form.name}
-                onChange={(e) => handleChange("name", e.target.value)}
-                placeholder="Full name"
-                className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
-              />
-            </Field>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {/* Personal details */}
+            <div className="space-y-4">
+              <h3 className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
+                Personal Details
+              </h3>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Full Name" id="name" required>
+                  <input
+                    id="name"
+                    value={form.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                    placeholder="Full name"
+                    className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
+                  />
+                </Field>
 
-            <Field label="Official Email" id="email">
-              <input
-                id="email"
-                type="email"
-                value={form.email}
-                onChange={(e) => handleChange("email", e.target.value)}
-                placeholder="name@department.gov.in"
-                className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
-              />
-            </Field>
+                <Field label="Official Email" id="email" required>
+                  <input
+                    id="email"
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => handleChange("email", e.target.value)}
+                    placeholder="name@department.gov.in"
+                    className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
+                  />
+                </Field>
 
-            <Field label="Designation" id="designation">
-              <input
-                id="designation"
-                value={form.designation}
-                onChange={(e) => handleChange("designation", e.target.value)}
-                placeholder="e.g. Inspector"
-                className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
-              />
-            </Field>
+                <Field label="Mobile Number" id="mobileNumber">
+                  <input
+                    id="mobileNumber"
+                    type="tel"
+                    value={form.mobileNumber}
+                    onChange={(e) => handleChange("mobileNumber", e.target.value)}
+                    placeholder="10-digit mobile number"
+                    className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
+                  />
+                </Field>
 
-            <Field label="Department" id="department">
-              <input
-                id="department"
-                value={form.department}
-                onChange={(e) => handleChange("department", e.target.value)}
-                placeholder="e.g. Police, GSRTC, Municipal"
-                className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
-              />
-            </Field>
+                <Field label="Employee ID" id="employeeId" required>
+                  <input
+                    id="employeeId"
+                    value={form.employeeId}
+                    onChange={(e) => handleChange("employeeId", e.target.value)}
+                    placeholder="e.g. GJP-00123"
+                    className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
+                  />
+                </Field>
+              </div>
+            </div>
 
-            <Field label="Employee ID" id="employeeId">
-              <input
-                id="employeeId"
-                value={form.employeeId}
-                onChange={(e) => handleChange("employeeId", e.target.value)}
-                placeholder="e.g. GJP-00123"
-                className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
-              />
-            </Field>
+            {/* Posting details */}
+            <div className="space-y-4">
+              <h3 className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
+                Posting Details
+              </h3>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Department" id="department" required>
+                  <select
+                    id="department"
+                    value={form.department}
+                    onChange={(e) => handleChange("department", e.target.value)}
+                    className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
+                  >
+                    <option value="">Select department</option>
+                    {DEPARTMENTS.map((d) => (
+                      <option key={d.value} value={d.value}>
+                        {d.label}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
 
-            <Field label="Role" id="role">
-              <select
-                id="role"
-                value={form.role}
-                onChange={(e) => handleChange("role", e.target.value)}
-                className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
-              >
-                <option value="">Select role</option>
-                {ROLES.map((r) => (
-                  <option key={r.value} value={r.value}>
-                    {r.label}
-                  </option>
-                ))}
-              </select>
-            </Field>
+                <Field label="Designation" id="designation" required>
+                  <select
+                    id="designation"
+                    value={form.designation}
+                    onChange={(e) => handleChange("designation", e.target.value)}
+                    className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
+                  >
+                    <option value="">Select designation</option>
+                    {DESIGNATIONS.map((d) => (
+                      <option key={d.value} value={d.value}>
+                        {d.label}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
 
-            <Field label="Mobile Number" id="mobileNumber">
-              <input
-                id="mobileNumber"
-                type="tel"
-                value={form.mobileNumber}
-                onChange={(e) => handleChange("mobileNumber", e.target.value)}
-                placeholder="10-digit mobile number"
-                className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
-              />
-            </Field>
+                <Field label="Access Role" id="role" required>
+                  <select
+                    id="role"
+                    value={form.role}
+                    onChange={(e) => handleChange("role", e.target.value)}
+                    className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
+                  >
+                    <option value="">Select role</option>
+                    {ROLES.map((r) => (
+                      <option key={r.value} value={r.value}>
+                        {r.label}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+              </div>
+            </div>
 
-            <Field label="Password" id="password">
-              <input
-                id="password"
-                type="password"
-                value={form.password}
-                onChange={(e) => handleChange("password", e.target.value)}
-                placeholder="Minimum 6 characters"
-                className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
-              />
-            </Field>
+            {/* Security */}
+            <div className="space-y-4">
+              <h3 className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
+                Security
+              </h3>
+              <Field label="Password" id="password" required>
+                <input
+                  id="password"
+                  type="password"
+                  value={form.password}
+                  onChange={(e) => handleChange("password", e.target.value)}
+                  placeholder="Minimum 6 characters"
+                  className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
+                />
+              </Field>
+            </div>
 
             {error && (
               <p className="text-sm font-semibold text-destructive">{error}</p>
@@ -234,10 +290,12 @@ function Field({
   label,
   id,
   children,
+  required = false,
 }: {
   label: string;
   id: string;
   children: React.ReactNode;
+  required?: boolean;
 }) {
   return (
     <div className="space-y-1.5">
@@ -246,6 +304,7 @@ function Field({
         className="text-xs font-bold tracking-wide text-muted-foreground uppercase"
       >
         {label}
+        {required && <span className="ml-0.5 text-destructive">*</span>}
       </label>
       {children}
     </div>
