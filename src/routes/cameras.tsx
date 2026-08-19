@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 
+import { AddCameraDialog } from "@/components/sentinel/add-camera-dialog";
 import { AppShell } from "@/components/sentinel/app-shell";
 import { CameraCard } from "@/components/sentinel/camera-card";
 import {
@@ -85,6 +86,7 @@ function CamerasPage() {
           actions={
             <>
               <StatusBadge tone="success">{cameras.data?.filter((c) => c.status === "live").length ?? 0} Live</StatusBadge>
+              <AddCameraDialog />
               <div className="flex overflow-hidden rounded-md border border-border">
                 {(["comfort", "dense"] as const).map((option) => (
                   <button
@@ -156,6 +158,11 @@ function CamerasPage() {
           <LoadingState rows={4} label="Loading camera wall" />
         ) : cameras.isError ? (
           <ErrorState onRetry={() => cameras.refetch()} />
+        ) : (cameras.data ?? []).length === 0 ? (
+          <EmptyState
+            title="No cameras registered yet"
+            description="Add your first camera to start streaming and detecting."
+          />
         ) : filtered.length === 0 ? (
           <EmptyState
             title="No cameras match these filters"
