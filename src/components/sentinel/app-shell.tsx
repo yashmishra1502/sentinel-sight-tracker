@@ -1,3 +1,4 @@
+import { RequireAuth } from "@/components/sentinel/require-auth";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Bell, Menu, Search, ShieldCheck, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
@@ -243,6 +244,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   return (
+    <RequireAuth>
     <div className="min-h-screen bg-background">
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col bg-sidebar lg:flex">
         <div className="border-b border-sidebar-border px-4 py-4">
@@ -297,5 +299,6 @@ export function AppShell({ children }: { children: ReactNode }) {
 
 <BottomNav />
     </div>
+       </RequireAuth>
   );
 }
