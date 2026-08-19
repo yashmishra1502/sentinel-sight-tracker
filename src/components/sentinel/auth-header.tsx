@@ -1,10 +1,11 @@
 import { ShieldCheck } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export function AuthHeader() {
   return (
     <header className="w-full border-b border-[#1e2b4d] bg-[#0a1330]">
       <div className="mx-auto flex h-20 max-w-5xl items-center justify-between px-4 sm:px-6">
-        <div className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3">
           <img
             src="/logo.png"
             alt="Gujarat Police"
@@ -18,7 +19,7 @@ export function AuthHeader() {
               GUJARAT POLICE
             </p>
           </div>
-        </div>
+        </Link>
 
         <div className="hidden items-center gap-1.5 text-xs font-medium text-emerald-400 sm:flex">
           <ShieldCheck className="h-4 w-4" />
