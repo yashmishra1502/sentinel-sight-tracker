@@ -11,7 +11,6 @@ import {
   StatusBadge,
 } from "@/components/sentinel/primitives";
 import { queryKeys, sentinelApi } from "@/lib/sentinel/api";
-import { trackedVehicle } from "@/lib/sentinel/mock-data";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/gis")({
@@ -42,6 +41,7 @@ function GisPage() {
     nearby: false,
   });
   const cameras = useQuery({ queryKey: queryKeys.cameras, queryFn: sentinelApi.getCameras });
+  const route = useQuery({ queryKey: queryKeys.latestRoute, queryFn: sentinelApi.getLatestRoute });
 
   const toggles: Array<{ key: keyof MapLayers; label: string }> = [
     { key: "cameras", label: "Cameras" },
@@ -51,6 +51,12 @@ function GisPage() {
     { key: "satellite", label: "Satellite" },
   ];
 
+  const waypoints = route.data ?? [];
+  const trackedPlate = waypoints[0]?.vehicleNumber ?? null;
+  const routeSummary = waypoints.length
+    ? waypoints.map((detection) => detection.cameraId).join(" → ")
+    : "No recent detections";
+
   return (
     <AppShell>
       <div className="space-y-5">
@@ -58,15 +64,19 @@ function GisPage() {
           eyebrow="Geospatial intelligence"
           title="GIS Intelligence"
           description="Camera positions, detection markers and reconstructed vehicle movement across districts."
-          actions={<StatusBadge tone="royal">Tracking GJ01AB1234</StatusBadge>}
+          actions={
+            trackedPlate ? (
+              <StatusBadge tone="royal">Tracking {trackedPlate}</StatusBadge>
+            ) : (
+              <StatusBadge tone="royal" dot={false}>
+                No active route
+              </StatusBadge>
+            )
+          }
         />
 
         <div className="grid gap-4 xl:grid-cols-[1fr_20rem]">
-          <SectionCard
-            title="Network & Route"
-            subtitle="CAM-007 → CAM-015 → CAM-029 → CAM-041"
-            bodyClassName="p-3 sm:p-4"
-          >
+          <SectionCard title="Network & Route" subtitle={routeSummary} bodyClassName="p-3 sm:p-4">
             {cameras.isPending ? (
               <div className="aspect-4/3 animate-pulse rounded-lg bg-muted sm:aspect-16/9" />
             ) : cameras.isError ? (
@@ -74,7 +84,7 @@ function GisPage() {
             ) : (
               <GujaratMap
                 cameras={cameras.data}
-                route={trackedVehicle.detections}
+                route={waypoints}
                 layers={layers}
                 className="aspect-4/3 sm:aspect-16/9"
               />
@@ -110,21 +120,27 @@ function GisPage() {
             </SectionCard>
 
             <SectionCard title="Route Waypoints" bodyClassName="p-0">
-              <ul className="divide-y divide-border">
-                {trackedVehicle.detections.map((detection) => (
-                  <li key={detection.id} className="flex items-center justify-between gap-3 px-4 py-3">
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-bold text-foreground">
-                        {detection.cameraId}
-                      </p>
-                      <p className="truncate text-xs text-muted-foreground">{detection.location}</p>
-                    </div>
-                    <span className="tabular shrink-0 text-xs font-semibold text-foreground">
-                      {detection.time}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              {waypoints.length === 0 ? (
+                <p className="p-4 text-sm text-muted-foreground">
+                  No detections recorded yet — waypoints appear here as ANPR events come in.
+                </p>
+              ) : (
+                <ul className="divide-y divide-border">
+                  {waypoints.map((detection) => (
+                    <li key={detection.id} className="flex items-center justify-between gap-3 px-4 py-3">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-bold text-foreground">
+                          {detection.cameraId}
+                        </p>
+                        <p className="truncate text-xs text-muted-foreground">{detection.location}</p>
+                      </div>
+                      <span className="tabular shrink-0 text-xs font-semibold text-foreground">
+                        {detection.time}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </SectionCard>
           </div>
         </div>
