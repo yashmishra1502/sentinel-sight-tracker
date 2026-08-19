@@ -39,6 +39,9 @@ function AlertsPage() {
   const list = (alerts.data ?? []).filter(
     (alert) => severity === "all" || alert.severity === severity,
   );
+  const criticalCount = (alerts.data ?? []).filter(
+    (alert) => alert.severity === "critical" && !alert.acknowledged,
+  ).length;
 
   return (
     <AppShell>
@@ -47,7 +50,15 @@ function AlertsPage() {
           eyebrow="Real-time intelligence"
           title="Alert Intelligence"
           description="Alerts raised by watchlist matching, AI detection and infrastructure health monitoring."
-          actions={<StatusBadge tone="critical" pulse>2 Critical</StatusBadge>}
+          actions={
+            criticalCount > 0 ? (
+              <StatusBadge tone="critical" pulse>
+                {criticalCount} Critical
+              </StatusBadge>
+            ) : (
+              <StatusBadge tone="success">No critical alerts</StatusBadge>
+            )
+          }
         />
 
         <div className="flex flex-wrap gap-2">
