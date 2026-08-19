@@ -244,61 +244,6 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   return (
-    <RequireAuth>
-    <div className="min-h-screen bg-background">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col bg-sidebar lg:flex">
-        <div className="border-b border-sidebar-border px-4 py-4">
-          <Brand />
-        </div>
-
-        <NavList />
-
-        <OfficerCard />
-      </aside>
-
-      {menuOpen ? (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-navy/70"
-            onClick={() => setMenuOpen(false)}
-            aria-hidden
-          />
-
-          <div className="absolute inset-y-0 left-0 flex w-[17rem] max-w-[85vw] flex-col bg-sidebar shadow-[var(--shadow-lift)]">
-            <div className="flex items-center justify-between gap-2 border-b border-sidebar-border px-4 py-3.5">
-              <Brand />
-
-              <button
-                onClick={() => setMenuOpen(false)}
-                className="grid size-10 shrink-0 place-items-center rounded-md text-navy-foreground/80 hover:bg-sidebar-accent"
-                aria-label="Close navigation menu"
-              >
-                <X className="size-5" aria-hidden />
-              </button>
-            </div>
-
-            <NavList onNavigate={() => setMenuOpen(false)} />
-
-            <OfficerCard />
-          </div>
-        </div>
-      ) : null}
-
-     <div className="lg:pl-64">
-  <TopBar onOpenMenu={() => setMenuOpen(true)} />
-
-  <main
-    className={cn(
-      "mx-auto w-full max-w-[1600px] px-3 pt-4 pb-24 sm:px-5 lg:pb-10"
-    )}
-  >
-    {children}
-  </main>
-
-</div>
-
-<BottomNav />
-    </div>
-       </RequireAuth>
+    
   );
 }
