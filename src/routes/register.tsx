@@ -293,3 +293,28 @@ function RegisterPage() {
     </div>
   );
 }
+
+function Field({
+  label,
+  id,
+  required,
+  children,
+}: {
+  label: string;
+  id: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <label
+        htmlFor={id}
+        className="text-xs font-bold tracking-wide text-muted-foreground uppercase"
+      >
+        {label}
+        {required && <span className="text-destructive"> *</span>}
+      </label>
+      {children}
+    </div>
+  );
+}
