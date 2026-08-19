@@ -3,7 +3,6 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 
 import { SectionCard, PageHeading } from "@/components/sentinel/primitives";
 import { supabase } from "@/integrations/supabase/client";
-import { buildDemoProfile, saveDemoSession } from "@/lib/demo-auth";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -60,18 +59,6 @@ function LoginPage() {
 
     setLoading(true);
 
-    // TEMPORARY DEMO LOGIN: no Supabase project/database is connected
-    // yet, so real auth has nothing to check against. Accept any
-    // identifier + password (that pass the basic checks above) and
-    // create a local mock session. Replace this block with the
-    // commented-out Supabase flow below once a backend is connected.
-    const demoProfile = buildDemoProfile({ identifier });
-    saveDemoSession(demoProfile);
-    setLoading(false);
-    navigate({ to: "/dashboard" });
-    return;
-
-    /* --- Real Supabase auth (re-enable once backend is connected) ---
     let loginEmail = identifier;
     const looksLikeEmail = identifier.includes("@");
 
@@ -104,7 +91,6 @@ function LoginPage() {
     }
 
     navigate({ to: "/dashboard" });
-    */
   }
 
   return (
