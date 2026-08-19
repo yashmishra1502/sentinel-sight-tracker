@@ -1,4 +1,4 @@
-import { RequireAuth } from "@/components/sentinel/require-auth";
+
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Bell, Menu, Search, ShieldCheck, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
