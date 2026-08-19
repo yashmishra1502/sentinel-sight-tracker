@@ -11,11 +11,13 @@ import {
   SignalZero,
 } from "lucide-react";
 
+import { AddCameraDialog } from "@/components/sentinel/add-camera-dialog";
 import { AppShell } from "@/components/sentinel/app-shell";
 import { AlertCard } from "@/components/sentinel/alert-card";
 import { CameraCard } from "@/components/sentinel/camera-card";
 import { GujaratMap } from "@/components/sentinel/gujarat-map";
 import {
+  EmptyState,
   ErrorState,
   KpiCard,
   KpiSkeleton,
@@ -25,7 +27,6 @@ import {
   StatusBadge,
 } from "@/components/sentinel/primitives";
 import { queryKeys, sentinelApi } from "@/lib/sentinel/api";
-import { trackedVehicle } from "@/lib/sentinel/mock-data";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -73,9 +74,6 @@ function QuickSearch() {
           <Search className="size-4" aria-hidden /> Search Vehicle
         </button>
       </form>
-      <p className="mt-2 text-xs text-muted-foreground">
-        Demo plates: GJ01AB1234 (watchlist match) · GJ05XY4567 (stolen)
-      </p>
     </SectionCard>
   );
 }
@@ -84,6 +82,7 @@ function DashboardPage() {
   const kpis = useQuery({ queryKey: queryKeys.kpis, queryFn: sentinelApi.getKpis });
   const cameras = useQuery({ queryKey: queryKeys.cameras, queryFn: sentinelApi.getCameras });
   const alerts = useQuery({ queryKey: queryKeys.alerts, queryFn: sentinelApi.getAlerts });
+  const route = useQuery({ queryKey: queryKeys.latestRoute, queryFn: sentinelApi.getLatestRoute });
 
   return (
     <AppShell>
@@ -95,6 +94,7 @@ function DashboardPage() {
           actions={
             <>
               <StatusBadge tone="success">System Operational</StatusBadge>
+              <AddCameraDialog />
               <Link
                 to="/gis"
                 className="inline-flex min-h-10 items-center gap-1.5 rounded-md border border-border bg-surface px-3 text-sm font-semibold text-foreground hover:bg-accent"
@@ -111,7 +111,13 @@ function DashboardPage() {
           <ErrorState onRetry={() => kpis.refetch()} />
         ) : (
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
-            <KpiCard label="Cameras" value="50" icon={Cctv} context="Registered sources" tone="royal" />
+            <KpiCard
+              label="Cameras"
+              value={String(kpis.data.cameras)}
+              icon={Cctv}
+              context="Registered sources"
+              tone="royal"
+            />
             <KpiCard
               label="Online"
               value={String(kpis.data.online)}
@@ -128,23 +134,22 @@ function DashboardPage() {
             />
             <KpiCard
               label="Active Alerts"
-              value="07"
+              value={String(kpis.data.activeAlerts)}
               icon={Bell}
-              context="2 critical"
+              context={`${(alerts.data ?? []).filter((a) => a.severity === "critical" && !a.acknowledged).length} critical`}
               tone="critical"
             />
             <KpiCard
               label="Vehicles Detected"
-              value="1,284"
+              value={kpis.data.vehiclesDetected.toLocaleString("en-IN")}
               icon={Car}
-              context="Last 24 hours"
-              trend="+8.4%"
+              context="All time"
             />
             <KpiCard
               label="Watchlist Matches"
-              value="12"
+              value={String(kpis.data.watchlistMatches)}
               icon={ListChecks}
-              context="Today"
+              context="Unacknowledged critical"
               tone="critical"
             />
           </div>
@@ -173,7 +178,7 @@ function DashboardPage() {
               ) : (
                 <GujaratMap
                   cameras={cameras.data}
-                  route={trackedVehicle.detections}
+                  route={route.data ?? []}
                   layers={{ cameras: true, route: true, heatmap: false, satellite: false, nearby: false }}
                   className="aspect-4/3 sm:aspect-16/9"
                 />
