@@ -244,6 +244,49 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   return (
-    
+    <div className="min-h-screen bg-background">
+      {/* Desktop sidebar */}
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col bg-navy lg:flex">
+        <div className="flex h-16 items-center border-b border-sidebar-border px-4">
+          <Brand />
+        </div>
+        <NavList />
+        <OfficerCard />
+      </aside>
+
+      {/* Mobile sidebar (drawer) */}
+      {menuOpen ? (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div
+            className="absolute inset-0 bg-black/60"
+            onClick={() => setMenuOpen(false)}
+          />
+          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col bg-navy">
+            <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-4">
+              <Brand compact />
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="grid size-9 place-items-center rounded-md text-navy-foreground"
+                aria-label="Close navigation menu"
+              >
+                <X className="size-5" aria-hidden />
+              </button>
+            </div>
+            <NavList onNavigate={() => setMenuOpen(false)} />
+            <OfficerCard />
+          </aside>
+        </div>
+      ) : null}
+
+      {/* Main content area */}
+      <div className="lg:pl-64">
+        <TopBar onOpenMenu={() => setMenuOpen(true)} />
+        <main className="px-3 py-4 pb-20 sm:px-5 sm:py-6 lg:pb-6">
+          {children}
+        </main>
+      </div>
+
+      <BottomNav />
+    </div>
   );
 }
