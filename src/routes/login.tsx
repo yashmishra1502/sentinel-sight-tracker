@@ -195,4 +195,4 @@ function LoginPage() {
     </div>
   );
 }
-}
+
