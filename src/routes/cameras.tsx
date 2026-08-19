@@ -1,187 +1,237 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import {
+  ArrowRight,
+  Bell,
+  Car,
+  Cctv,
+  ListChecks,
+  Search,
+  SignalHigh,
+  SignalZero,
+} from "lucide-react";
 
 import { AddCameraDialog } from "@/components/sentinel/add-camera-dialog";
 import { AppShell } from "@/components/sentinel/app-shell";
+import { AlertCard } from "@/components/sentinel/alert-card";
 import { CameraCard } from "@/components/sentinel/camera-card";
+import { GujaratMap } from "@/components/sentinel/gujarat-map";
 import {
   EmptyState,
   ErrorState,
+  KpiCard,
+  KpiSkeleton,
   LoadingState,
   PageHeading,
+  SectionCard,
   StatusBadge,
 } from "@/components/sentinel/primitives";
 import { queryKeys, sentinelApi } from "@/lib/sentinel/api";
-import type { CameraStatus, Department } from "@/lib/sentinel/types";
-import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/cameras")({
+export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
-      { title: "Live Camera Intelligence — SENTINEL" },
+      { title: "Command Center — SENTINEL" },
       {
         name: "description",
         content:
-          "Monitor the unified CCTV wall: live, connecting, offline and degraded feeds with AI detection status per camera.",
+          "Live operational overview: camera health, active alerts, vehicle detections and watchlist matches across the Gujarat CCTV network.",
       },
-      { property: "og:title", content: "Live Camera Intelligence — SENTINEL" },
+      { property: "og:title", content: "Command Center — SENTINEL" },
       {
         property: "og:description",
-        content: "A single camera wall across five government departments and multiple vendors.",
+        content: "Camera health, alerts, detections and watchlist matches in one operational view.",
       },
     ],
   }),
-  component: CamerasPage,
+  component: DashboardPage,
 });
 
-const statusFilters: Array<{ label: string; value: CameraStatus | "all" }> = [
-  { label: "All", value: "all" },
-  { label: "Live", value: "live" },
-  { label: "Connecting", value: "connecting" },
-  { label: "No signal", value: "no-signal" },
-  { label: "Offline", value: "offline" },
-  { label: "Error", value: "error" },
-];
+function QuickSearch() {
+  return (
+    <SectionCard
+      title="Vehicle Lookup"
+      subtitle="Search the full CCTV network by registration number"
+    >
+      <form
+        className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]"
+        action="/search"
+        method="get"
+      >
+        <label htmlFor="quick-vehicle" className="sr-only">
+          Vehicle registration number
+        </label>
+        <input
+          id="quick-vehicle"
+          name="q"
+          placeholder="GJ01AB1234"
+          className="tabular h-12 w-full rounded-md border border-input bg-background px-3 text-base font-semibold tracking-widest uppercase placeholder:font-normal placeholder:tracking-normal placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+        />
+        <button
+          type="submit"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-royal px-5 text-sm font-bold tracking-wide text-royal-foreground uppercase transition-colors hover:bg-royal/90"
+        >
+          <Search className="size-4" aria-hidden /> Search Vehicle
+        </button>
+      </form>
+    </SectionCard>
+  );
+}
 
-const departmentFilters: Array<Department | "ALL"> = [
-  "ALL",
-  "POLICE",
-  "MUNICIPAL",
-  "GSRTC",
-  "PANCHAYAT",
-  "HEALTH",
-];
-
-function CamerasPage() {
-  const [status, setStatus] = useState<CameraStatus | "all">("all");
-  const [department, setDepartment] = useState<Department | "ALL">("ALL");
-  const [query, setQuery] = useState("");
-  const [density, setDensity] = useState<"comfort" | "dense">("comfort");
-
+function DashboardPage() {
+  const kpis = useQuery({ queryKey: queryKeys.kpis, queryFn: sentinelApi.getKpis });
   const cameras = useQuery({ queryKey: queryKeys.cameras, queryFn: sentinelApi.getCameras });
-
-  const filtered = useMemo(() => {
-    const list = cameras.data ?? [];
-    return list.filter((camera) => {
-      const matchStatus = status === "all" || camera.status === status;
-      const matchDept = department === "ALL" || camera.department === department;
-      const term = query.trim().toLowerCase();
-      const matchQuery =
-        !term ||
-        camera.id.toLowerCase().includes(term) ||
-        camera.location.toLowerCase().includes(term) ||
-        camera.district.toLowerCase().includes(term);
-      return matchStatus && matchDept && matchQuery;
-    });
-  }, [cameras.data, status, department, query]);
+  const alerts = useQuery({ queryKey: queryKeys.alerts, queryFn: sentinelApi.getAlerts });
+  const route = useQuery({ queryKey: queryKeys.latestRoute, queryFn: sentinelApi.getLatestRoute });
 
   return (
     <AppShell>
       <div className="space-y-5">
         <PageHeading
-          eyebrow="CCTV network"
-          title="Live Camera Intelligence"
-          description="Every connected source normalised into one wall. Video containers are integration points for the streaming service."
+          eyebrow="Command center"
+          title="Operational Overview"
+          description="Unified status across all connected government CCTV sources, AI detection services and active intelligence."
           actions={
             <>
-              <StatusBadge tone="success">{cameras.data?.filter((c) => c.status === "live").length ?? 0} Live</StatusBadge>
+              <StatusBadge tone="success">System Operational</StatusBadge>
               <AddCameraDialog />
-              <div className="flex overflow-hidden rounded-md border border-border">
-                {(["comfort", "dense"] as const).map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => setDensity(option)}
-                    className={cn(
-                      "min-h-10 px-3 text-xs font-semibold capitalize",
-                      density === option
-                        ? "bg-navy text-navy-foreground"
-                        : "bg-surface text-muted-foreground hover:bg-accent",
-                    )}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
+              <Link
+                to="/gis"
+                className="inline-flex min-h-10 items-center gap-1.5 rounded-md border border-border bg-surface px-3 text-sm font-semibold text-foreground hover:bg-accent"
+              >
+                Open GIS <ArrowRight className="size-4" aria-hidden />
+              </Link>
             </>
           }
         />
 
-        <section className="panel space-y-3 p-3 sm:p-4">
-          <div>
-            <label htmlFor="camera-search" className="label-caps">
-              Filter cameras
-            </label>
-            <input
-              id="camera-search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Camera ID, location or district"
-              className="mt-1.5 h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus:border-ring focus:outline-none"
+        {kpis.isPending ? (
+          <KpiSkeleton />
+        ) : kpis.isError ? (
+          <ErrorState onRetry={() => kpis.refetch()} />
+        ) : (
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
+            <KpiCard
+              label="Cameras"
+              value={String(kpis.data.cameras)}
+              icon={Cctv}
+              context="Registered sources"
+              tone="royal"
+            />
+            <KpiCard
+              label="Online"
+              value={String(kpis.data.online)}
+              icon={SignalHigh}
+              context="Streaming + AI active"
+              tone="success"
+            />
+            <KpiCard
+              label="Offline"
+              value={String(kpis.data.offline)}
+              icon={SignalZero}
+              context="Vendor NVR unreachable"
+              tone="warning"
+            />
+            <KpiCard
+              label="Active Alerts"
+              value={String(kpis.data.activeAlerts)}
+              icon={Bell}
+              context={`${(alerts.data ?? []).filter((a) => a.severity === "critical" && !a.acknowledged).length} critical`}
+              tone="critical"
+            />
+            <KpiCard
+              label="Vehicles Detected"
+              value={kpis.data.vehiclesDetected.toLocaleString("en-IN")}
+              icon={Car}
+              context="All time"
+            />
+            <KpiCard
+              label="Watchlist Matches"
+              value={String(kpis.data.watchlistMatches)}
+              icon={ListChecks}
+              context="Unacknowledged critical"
+              tone="critical"
             />
           </div>
-          <div className="flex flex-wrap gap-2">
-            {statusFilters.map((filter) => (
-              <button
-                key={filter.value}
-                onClick={() => setStatus(filter.value)}
-                className={cn(
-                  "min-h-9 rounded-full border px-3 text-xs font-semibold transition-colors",
-                  status === filter.value
-                    ? "border-royal bg-royal text-royal-foreground"
-                    : "border-border bg-surface text-muted-foreground hover:bg-accent",
-                )}
-              >
-                {filter.label}
-              </button>
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {departmentFilters.map((dept) => (
-              <button
-                key={dept}
-                onClick={() => setDepartment(dept)}
-                className={cn(
-                  "min-h-9 rounded-full border px-3 text-xs font-semibold transition-colors",
-                  department === dept
-                    ? "border-navy bg-navy text-navy-foreground"
-                    : "border-border bg-surface text-muted-foreground hover:bg-accent",
-                )}
-              >
-                {dept}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {cameras.isPending ? (
-          <LoadingState rows={4} label="Loading camera wall" />
-        ) : cameras.isError ? (
-          <ErrorState onRetry={() => cameras.refetch()} />
-        ) : (cameras.data ?? []).length === 0 ? (
-          <EmptyState
-            title="No cameras registered yet"
-            description="Add your first camera to start streaming and detecting."
-          />
-        ) : filtered.length === 0 ? (
-          <EmptyState
-            title="No cameras match these filters"
-            description="Adjust status, department or search term."
-          />
-        ) : (
-          <div
-            className={cn(
-              "grid gap-3",
-              density === "comfort"
-                ? "sm:grid-cols-2 xl:grid-cols-3"
-                : "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
-            )}
-          >
-            {filtered.map((camera) => (
-              <CameraCard key={camera.id} camera={camera} />
-            ))}
-          </div>
         )}
+
+        <div className="grid gap-4 xl:grid-cols-[1.4fr_1fr]">
+          <div className="space-y-4">
+            <QuickSearch />
+            <SectionCard
+              title="Network Map"
+              subtitle="Camera distribution and last tracked vehicle route"
+              actions={
+                <Link
+                  to="/gis"
+                  className="text-xs font-semibold text-royal hover:underline"
+                >
+                  Full GIS
+                </Link>
+              }
+              bodyClassName="p-3 sm:p-4"
+            >
+              {cameras.isPending ? (
+                <div className="aspect-4/3 animate-pulse rounded-lg bg-muted sm:aspect-16/9" />
+              ) : cameras.isError ? (
+                <ErrorState onRetry={() => cameras.refetch()} />
+              ) : (
+                <GujaratMap
+                  cameras={cameras.data}
+                  route={route.data ?? []}
+                  layers={{ cameras: true, route: true, heatmap: false, satellite: false, nearby: false }}
+                  className="aspect-4/3 sm:aspect-16/9"
+                />
+              )}
+            </SectionCard>
+          </div>
+
+          <div className="space-y-4">
+            <SectionCard
+              title="Priority Alerts"
+              subtitle="Highest severity first"
+              actions={
+                <Link to="/alerts" className="text-xs font-semibold text-royal hover:underline">
+                  All alerts
+                </Link>
+              }
+              bodyClassName="space-y-3 p-3 sm:p-4"
+            >
+              {alerts.isPending ? (
+                <LoadingState rows={2} label="Loading alerts" />
+              ) : alerts.isError ? (
+                <ErrorState onRetry={() => alerts.refetch()} />
+              ) : (
+                alerts.data
+                  .slice(0, 3)
+                  .map((alert) => <AlertCard key={alert.id} alert={alert} compact />)
+              )}
+            </SectionCard>
+          </div>
+        </div>
+
+        <SectionCard
+          title="Live Feed Sample"
+          subtitle="Four highest-traffic corridors"
+          actions={
+            <Link to="/cameras" className="text-xs font-semibold text-royal hover:underline">
+              Camera wall
+            </Link>
+          }
+          bodyClassName="p-3 sm:p-4"
+        >
+          {cameras.isPending ? (
+            <LoadingState rows={2} label="Loading cameras" />
+          ) : cameras.isError ? (
+            <ErrorState onRetry={() => cameras.refetch()} />
+          ) : (
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+              {cameras.data.slice(0, 4).map((camera) => (
+                <CameraCard key={camera.id} camera={camera} compact />
+              ))}
+            </div>
+          )}
+        </SectionCard>
       </div>
     </AppShell>
   );
