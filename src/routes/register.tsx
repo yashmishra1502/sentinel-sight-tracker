@@ -1,3 +1,5 @@
+import { AuthHeader } from "@/components/sentinel/auth-header";
+import { AuthFooter } from "@/components/sentinel/auth-footer";
 import { useState } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 
