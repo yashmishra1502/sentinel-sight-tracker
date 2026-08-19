@@ -14,7 +14,196 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      alerts: {
+        Row: {
+          acknowledged: boolean
+          camera_code: string
+          camera_id: string | null
+          confidence: number
+          created_at: string
+          id: string
+          location: string
+          note: string
+          severity: Database["public"]["Enums"]["alert_severity"]
+          title: string
+          vehicle_number: string
+        }
+        Insert: {
+          acknowledged?: boolean
+          camera_code?: string
+          camera_id?: string | null
+          confidence?: number
+          created_at?: string
+          id?: string
+          location?: string
+          note?: string
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          title: string
+          vehicle_number?: string
+        }
+        Update: {
+          acknowledged?: boolean
+          camera_code?: string
+          camera_id?: string | null
+          confidence?: number
+          created_at?: string
+          id?: string
+          location?: string
+          note?: string
+          severity?: Database["public"]["Enums"]["alert_severity"]
+          title?: string
+          vehicle_number?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alerts_camera_id_fkey"
+            columns: ["camera_id"]
+            isOneToOne: false
+            referencedRelation: "cameras"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cameras: {
+        Row: {
+          ai_active: boolean
+          code: string
+          created_at: string
+          department: string
+          district: string
+          id: string
+          last_heartbeat_at: string | null
+          location: string
+          map_x: number
+          map_y: number
+          name: string
+          resolution: string
+          status: Database["public"]["Enums"]["camera_status"]
+          stream_type: Database["public"]["Enums"]["stream_type"]
+          stream_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          ai_active?: boolean
+          code: string
+          created_at?: string
+          department?: string
+          district?: string
+          id?: string
+          last_heartbeat_at?: string | null
+          location?: string
+          map_x?: number
+          map_y?: number
+          name: string
+          resolution?: string
+          status?: Database["public"]["Enums"]["camera_status"]
+          stream_type?: Database["public"]["Enums"]["stream_type"]
+          stream_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ai_active?: boolean
+          code?: string
+          created_at?: string
+          department?: string
+          district?: string
+          id?: string
+          last_heartbeat_at?: string | null
+          location?: string
+          map_x?: number
+          map_y?: number
+          name?: string
+          resolution?: string
+          status?: Database["public"]["Enums"]["camera_status"]
+          stream_type?: Database["public"]["Enums"]["stream_type"]
+          stream_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      detections: {
+        Row: {
+          camera_code: string
+          camera_id: string | null
+          colour: string
+          confidence: number
+          created_at: string
+          detected_at: string
+          direction: string
+          id: string
+          location: string
+          plate_confidence: number
+          vehicle_number: string
+          vehicle_type: string
+        }
+        Insert: {
+          camera_code?: string
+          camera_id?: string | null
+          colour?: string
+          confidence?: number
+          created_at?: string
+          detected_at?: string
+          direction?: string
+          id?: string
+          location?: string
+          plate_confidence?: number
+          vehicle_number: string
+          vehicle_type?: string
+        }
+        Update: {
+          camera_code?: string
+          camera_id?: string | null
+          colour?: string
+          confidence?: number
+          created_at?: string
+          detected_at?: string
+          direction?: string
+          id?: string
+          location?: string
+          plate_confidence?: number
+          vehicle_number?: string
+          vehicle_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "detections_camera_id_fkey"
+            columns: ["camera_id"]
+            isOneToOne: false
+            referencedRelation: "cameras"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      watchlist: {
+        Row: {
+          added_by: string
+          created_at: string
+          id: string
+          last_seen_at: string | null
+          reason: string
+          status: Database["public"]["Enums"]["watchlist_status"]
+          vehicle_number: string
+        }
+        Insert: {
+          added_by?: string
+          created_at?: string
+          id?: string
+          last_seen_at?: string | null
+          reason?: string
+          status?: Database["public"]["Enums"]["watchlist_status"]
+          vehicle_number: string
+        }
+        Update: {
+          added_by?: string
+          created_at?: string
+          id?: string
+          last_seen_at?: string | null
+          reason?: string
+          status?: Database["public"]["Enums"]["watchlist_status"]
+          vehicle_number?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +212,10 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      alert_severity: "critical" | "high" | "medium" | "low" | "resolved"
+      camera_status: "live" | "connecting" | "offline" | "no-signal" | "error"
+      stream_type: "hls" | "mjpeg" | "mp4" | "webrtc"
+      watchlist_status: "WATCH" | "STOLEN" | "WANTED" | "CLEARED"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +342,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      alert_severity: ["critical", "high", "medium", "low", "resolved"],
+      camera_status: ["live", "connecting", "offline", "no-signal", "error"],
+      stream_type: ["hls", "mjpeg", "mp4", "webrtc"],
+      watchlist_status: ["WATCH", "STOLEN", "WANTED", "CLEARED"],
+    },
   },
 } as const
