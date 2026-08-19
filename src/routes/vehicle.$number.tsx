@@ -14,7 +14,6 @@ import {
 } from "@/components/sentinel/primitives";
 import { VehicleSummary } from "@/components/sentinel/vehicle-summary";
 import { queryKeys, sentinelApi } from "@/lib/sentinel/api";
-import { cameras } from "@/lib/sentinel/mock-data";
 
 export const Route = createFileRoute("/vehicle/$number")({
   head: () => ({
@@ -39,6 +38,7 @@ function VehiclePage() {
     queryKey: queryKeys.vehicle(plate),
     queryFn: () => sentinelApi.searchVehicle(plate),
   });
+  const cameras = useQuery({ queryKey: queryKeys.cameras, queryFn: sentinelApi.getCameras });
 
   return (
     <AppShell>
@@ -66,7 +66,7 @@ function VehiclePage() {
               </SectionCard>
               <SectionCard title="Movement Map" bodyClassName="p-3 sm:p-4">
                 <GujaratMap
-                  cameras={cameras}
+                  cameras={cameras.data ?? []}
                   route={result.data.detections}
                   layers={{ cameras: true, route: true, heatmap: false, satellite: false, nearby: false }}
                   className="aspect-4/3"
