@@ -318,4 +318,113 @@ Five departments, different vendors, different infrastructure — one normalised
 layer.
 </p>
 
-    <div className="mt-8 grid gap-3
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          {departmentCards.map((dept) => (
+            <article key={dept.name} className="panel p-4">
+              <dept.icon className="size-6 text-royal" aria-hidden />
+              <p className="font-display mt-3 text-sm font-extrabold tracking-[0.12em] text-foreground">
+                {dept.name}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">{dept.role}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const workflowSteps = [
+  {
+    icon: Database,
+    title: "Ingest",
+    body: "Normalise heterogeneous NVR, RTSP and vendor feeds into one camera registry.",
+  },
+  {
+    icon: Cpu,
+    title: "Detect",
+    body: "AI vehicle detection and ANPR extract plate, type and colour per frame.",
+  },
+  {
+    icon: Radar,
+    title: "Correlate",
+    body: "Cross-camera tracking stitches sightings into a single movement trail.",
+  },
+  {
+    icon: MapPin,
+    title: "Map",
+    body: "GIS intelligence plots the route across districts with time-ordered waypoints.",
+  },
+  {
+    icon: Bell,
+    title: "Alert",
+    body: "Watchlist matches raise real-time alerts to the command center.",
+  },
+  {
+    icon: ScanLine,
+    title: "Act",
+    body: "Officers review evidence, verify the crop and dispatch from one console.",
+  },
+];
+
+function Workflow() {
+  return (
+    <section id="workflow" className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20">
+      <p className="label-caps">Operational workflow</p>
+      <h2 className="mt-2 max-w-2xl text-2xl font-extrabold text-foreground sm:text-4xl">
+        From Raw Feed to Actionable Intelligence
+      </h2>
+
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {workflowSteps.map((step, index) => (
+          <article key={step.title} className="panel p-5">
+            <div className="flex items-center gap-3">
+              <span className="grid size-9 place-items-center rounded-md bg-royal/12 text-royal">
+                <step.icon className="size-4.5" aria-hidden />
+              </span>
+              <span className="tabular text-xs font-bold text-muted-foreground">
+                STEP {String(index + 1).padStart(2, "0")}
+              </span>
+            </div>
+            <p className="font-display mt-3 text-base font-extrabold text-foreground">
+              {step.title}
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">{step.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div className="panel mt-6 flex flex-col gap-4 border-royal/35 bg-royal/6 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <p className="font-display text-base font-extrabold text-foreground">
+            Run the demo trail: GJ01AB1234
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Search the plate, replay the timeline, then follow the route on the GIS map.
+          </p>
+        </div>
+        <Link
+          to="/search"
+          className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-md bg-royal px-5 text-sm font-bold tracking-wide text-royal-foreground uppercase transition-colors hover:bg-royal/90"
+        >
+          <Search className="size-4" aria-hidden /> Start Vehicle Search
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function Landing() {
+  return (
+    <div className="min-h-screen bg-background">
+      <TopNav />
+      <main>
+        <Hero />
+        <Dataset />
+        <Departments />
+        <Workflow />
+      </main>
+      <Footer />
+    </div>
+  );
+}
