@@ -3,6 +3,8 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 
 import { SectionCard, PageHeading } from "@/components/sentinel/primitives";
 import { supabase } from "@/integrations/supabase/client";
+import { buildDemoProfile, saveDemoSession } from "@/lib/demo-auth";
+import type { UserRole } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/register")({
   head: () => ({
@@ -67,6 +69,26 @@ function RegisterPage() {
 
     setLoading(true);
 
+    // TEMPORARY DEMO REGISTER: no Supabase project/database is
+    // connected yet. Save the form straight into a local mock
+    // profile instead of calling Supabase. Replace this block with
+    // the commented-out Supabase flow below once a backend is
+    // connected.
+    const demoProfile = buildDemoProfile({
+      identifier: form.email,
+      name: form.name,
+      designation: form.designation,
+      department: form.department,
+      employeeId: form.employeeId,
+      role: form.role as UserRole,
+      mobileNumber: form.mobileNumber,
+    });
+    saveDemoSession(demoProfile);
+    setLoading(false);
+    navigate({ to: "/dashboard" });
+    return;
+
+    /* --- Real Supabase auth (re-enable once backend is connected) ---
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
@@ -103,6 +125,7 @@ function RegisterPage() {
     }
 
     navigate({ to: "/login" });
+    */
   }
 
   return (
