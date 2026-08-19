@@ -42,13 +42,13 @@ export const Route = createFileRoute("/search")({
   component: SearchPage,
 });
 
-function FilterPanel({ open }: { open: boolean }) {
+function FilterPanel({ open, cameraIds }: { open: boolean; cameraIds: string[] }) {
   if (!open) return null;
   const fields: Array<{ label: string; options: string[] }> = [
     { label: "Date range", options: ["Today", "Last 24 hours", "Last 7 days", "Custom"] },
     { label: "Department", options: ["All", "POLICE", "MUNICIPAL", "GSRTC", "PANCHAYAT", "HEALTH"] },
     { label: "Location", options: ["All districts", "Ahmedabad", "Gandhinagar", "Surat", "Rajkot"] },
-    { label: "Camera", options: ["All cameras", "CAM-007", "CAM-015", "CAM-029", "CAM-041"] },
+    { label: "Camera", options: ["All cameras", ...cameraIds] },
     { label: "Min. confidence", options: ["70%", "80%", "90%", "95%"] },
     { label: "Watchlist status", options: ["Any", "Match only", "No match"] },
   ];
@@ -88,6 +88,7 @@ function SearchPage() {
     queryFn: () => sentinelApi.searchVehicle(plate),
     enabled: plate.length >= 4,
   });
+  const cameras = useQuery({ queryKey: queryKeys.cameras, queryFn: sentinelApi.getCameras });
 
   return (
     <AppShell>
@@ -141,25 +142,13 @@ function SearchPage() {
           </form>
 
           <div className="mt-4">
-            <FilterPanel open={filtersOpen} />
+            <FilterPanel open={filtersOpen} cameraIds={(cameras.data ?? []).map((c) => c.id)} />
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="label-caps flex items-center gap-1.5">
-              <Filter className="size-3.5" aria-hidden /> Demo plates
+              <Filter className="size-3.5" aria-hidden /> Filters apply to the next search
             </span>
-            {["GJ01AB1234", "GJ05XY4567", "GJ99ZZ0000"].map((sample) => (
-              <button
-                key={sample}
-                onClick={() => {
-                  setInput(sample);
-                  navigate({ to: "/search", search: { q: sample } });
-                }}
-                className="tabular min-h-9 rounded-full border border-border bg-surface px-3 text-xs font-semibold text-foreground hover:bg-accent"
-              >
-                {sample}
-              </button>
-            ))}
           </div>
         </section>
 
