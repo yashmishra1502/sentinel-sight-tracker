@@ -1,22 +1,44 @@
-// Shared domain types for SENTINEL. These mirror the contracts the backend
-// team will expose (/cameras, /vehicles/:number, /detections, /alerts, ...).
+// Shared domain types for SENTINEL. These mirror the live database schema
+// (cameras, detections, watchlist, alerts) exposed through `sentinelApi`.
 
 export type CameraStatus = "live" | "connecting" | "offline" | "no-signal" | "error";
+
+export type StreamType = "hls" | "mjpeg" | "mp4" | "webrtc";
 
 export type Department = "POLICE" | "HEALTH" | "GSRTC" | "PANCHAYAT" | "MUNICIPAL";
 
 export interface Camera {
+  /** Operational camera code, e.g. CAM-029. */
   id: string;
+  /** Database primary key, used for updates and deletes. */
+  dbId: string;
   name: string;
   location: string;
   district: string;
   department: Department;
   status: CameraStatus;
+  streamUrl: string | null;
+  streamType: StreamType;
   streamConnected: boolean;
   aiActive: boolean;
-  lastHeartbeatSeconds: number;
+  lastHeartbeatSeconds: number | null;
   resolution: string;
   /** Normalised map coordinates (0-100) used by the GIS surface. */
+  x: number;
+  y: number;
+}
+
+export interface CameraInput {
+  code: string;
+  name: string;
+  location: string;
+  district: string;
+  department: Department;
+  status: CameraStatus;
+  streamUrl: string;
+  streamType: StreamType;
+  aiActive: boolean;
+  resolution: string;
   x: number;
   y: number;
 }
